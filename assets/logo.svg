@@ -25,7 +25,7 @@
 
   <g transform="translate(320 74)" fill="#0f172a">
     <text x="0" y="76" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="74" font-weight="800" letter-spacing="-2">CRAM2Excel</text>
-    <text x="2" y="126" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="28" font-weight="600" fill="#0f766e">SAMtools plugin for exporting CRAM to native Excel workbooks</text>
+    <text x="2" y="126" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="28" font-weight="600" fill="#0f766e">SAMtools plugin for exporting CRAM to Excel</text>
     <text x="2" y="172" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#475569">Fast to inspect. Easy to share. Still grounded in HTSlib.</text>
   </g>
 </svg>
