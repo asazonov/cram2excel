@@ -16,6 +16,7 @@ SO_EXT := bundle
 SHARED_FLAGS := -bundle -Wl,-undefined,dynamic_lookup
 else
 SO_EXT := so
+CFLAGS += -fPIC
 SHARED_FLAGS := -shared
 endif
 

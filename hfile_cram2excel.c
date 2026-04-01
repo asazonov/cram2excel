@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 200809L
+
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
@@ -171,6 +173,52 @@ static int strbuf_appendf(strbuf_t *buf, const char *fmt, ...)
     return 0;
 }
 
+static char *dup_string_len(const char *text, size_t len)
+{
+    char *copy = malloc(len + 1);
+    if (!copy) {
+        return NULL;
+    }
+
+    memcpy(copy, text, len);
+    copy[len] = '\0';
+    return copy;
+}
+
+static char *dup_string(const char *text)
+{
+    return dup_string_len(text, strlen(text));
+}
+
+static char *alloc_printf(const char *fmt, ...)
+{
+    va_list ap;
+    va_list ap2;
+    int needed;
+    char *buffer;
+
+    va_start(ap, fmt);
+    va_copy(ap2, ap);
+    needed = vsnprintf(NULL, 0, fmt, ap);
+    va_end(ap);
+
+    if (needed < 0) {
+        va_end(ap2);
+        errno = EIO;
+        return NULL;
+    }
+
+    buffer = malloc((size_t) needed + 1);
+    if (!buffer) {
+        va_end(ap2);
+        return NULL;
+    }
+
+    vsnprintf(buffer, (size_t) needed + 1, fmt, ap2);
+    va_end(ap2);
+    return buffer;
+}
+
 static void strbuf_free(strbuf_t *buf)
 {
     free(buf->data);
@@ -224,8 +272,8 @@ static int worksheet_open(worksheet_t *sheet, const char *sheet_name)
         return -1;
     }
 
-    sheet->name = strdup(sheet_name);
-    sheet->temp_path = strdup(pattern);
+    sheet->name = dup_string(sheet_name);
+    sheet->temp_path = dup_string(pattern);
     if (!sheet->name || !sheet->temp_path) {
         int save_errno = errno;
         fclose(stream);
@@ -505,7 +553,7 @@ static int parse_integer(const char *text, long long *value)
 static char *join_optional_tags(char **fields, size_t count)
 {
     if (count == 0) {
-        char *empty = strdup("");
+        char *empty = dup_string("");
         return empty;
     }
 
@@ -1005,7 +1053,7 @@ static int build_xlsx(cram2excel_hfile_t *fp)
         goto cleanup;
     }
 
-    entries[entry_count].name = strdup("[Content_Types].xml");
+    entries[entry_count].name = dup_string("[Content_Types].xml");
     entries[entry_count].mod_time = dos_time;
     entries[entry_count].mod_date = dos_date;
     if (!entries[entry_count].name) goto cleanup;
@@ -1019,7 +1067,7 @@ static int build_xlsx(cram2excel_hfile_t *fp)
     }
     entry_count++;
 
-    entries[entry_count].name = strdup("_rels/.rels");
+    entries[entry_count].name = dup_string("_rels/.rels");
     entries[entry_count].mod_time = dos_time;
     entries[entry_count].mod_date = dos_date;
     if (!entries[entry_count].name) goto cleanup;
@@ -1033,7 +1081,7 @@ static int build_xlsx(cram2excel_hfile_t *fp)
     }
     entry_count++;
 
-    entries[entry_count].name = strdup("xl/workbook.xml");
+    entries[entry_count].name = dup_string("xl/workbook.xml");
     entries[entry_count].mod_time = dos_time;
     entries[entry_count].mod_date = dos_date;
     if (!entries[entry_count].name) goto cleanup;
@@ -1047,7 +1095,7 @@ static int build_xlsx(cram2excel_hfile_t *fp)
     }
     entry_count++;
 
-    entries[entry_count].name = strdup("xl/_rels/workbook.xml.rels");
+    entries[entry_count].name = dup_string("xl/_rels/workbook.xml.rels");
     entries[entry_count].mod_time = dos_time;
     entries[entry_count].mod_date = dos_date;
     if (!entries[entry_count].name) goto cleanup;
@@ -1061,7 +1109,7 @@ static int build_xlsx(cram2excel_hfile_t *fp)
     }
     entry_count++;
 
-    entries[entry_count].name = strdup("xl/styles.xml");
+    entries[entry_count].name = dup_string("xl/styles.xml");
     entries[entry_count].mod_time = dos_time;
     entries[entry_count].mod_date = dos_date;
     if (!entries[entry_count].name) goto cleanup;
@@ -1076,8 +1124,8 @@ static int build_xlsx(cram2excel_hfile_t *fp)
     entry_count++;
 
     for (i = 0; i < fp->align_count; i++) {
-        if (asprintf(&entries[entry_count].name, "xl/worksheets/sheet%zu.xml", i + 1) < 0) {
-            entries[entry_count].name = NULL;
+        entries[entry_count].name = alloc_printf("xl/worksheets/sheet%zu.xml", i + 1);
+        if (!entries[entry_count].name) {
             goto cleanup;
         }
         entries[entry_count].path = fp->align_sheets[i].temp_path;
@@ -1094,8 +1142,8 @@ static int build_xlsx(cram2excel_hfile_t *fp)
         entry_count++;
     }
 
-    if (asprintf(&entries[entry_count].name, "xl/worksheets/sheet%zu.xml", fp->align_count + 1) < 0) {
-        entries[entry_count].name = NULL;
+    entries[entry_count].name = alloc_printf("xl/worksheets/sheet%zu.xml", fp->align_count + 1);
+    if (!entries[entry_count].name) {
         goto cleanup;
     }
     entries[entry_count].path = fp->header_sheet.temp_path;
@@ -1243,7 +1291,7 @@ static hFILE *cram2excel_open(const char *filename, const char *mode)
     memset(((char *) fp) + sizeof(fp->base), 0, sizeof(*fp) - sizeof(fp->base));
     fp->base.backend = &cram2excel_backend;
 
-    fp->output_path = strdup(path);
+    fp->output_path = dup_string(path);
     if (!fp->output_path) {
         goto error;
     }
