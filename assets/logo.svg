@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" role="img" aria-labelledby="title desc">
+  <title id="title">CRAM2Excel Logo</title>
+  <desc id="desc">A bold spreadsheet tile with a DNA helix ribbon and the wordmark CRAM2Excel.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0b3b60"/>
+    </linearGradient>
+    <linearGradient id="helix" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="320" rx="40" fill="#f5f7f2"/>
+  <g transform="translate(48 48)">
+    <rect x="0" y="0" width="224" height="224" rx="28" fill="url(#bg)"/>
+    <rect x="32" y="32" width="160" height="160" rx="18" fill="#ffffff" opacity="0.12"/>
+    <path d="M52 64h120M52 96h120M52 128h120M52 160h120" stroke="#d1fae5" stroke-width="10" stroke-linecap="round" opacity="0.85"/>
+    <path d="M92 44v144M132 44v144" stroke="#d1fae5" stroke-width="10" stroke-linecap="round" opacity="0.65"/>
+    <path d="M32 96c30-40 70-40 100 0s70 40 100 0" fill="none" stroke="url(#helix)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M32 128c30 40 70 40 100 0s70-40 100 0" fill="none" stroke="#93c5fd" stroke-width="14" stroke-linecap="round"/>
+    <path d="M54 110h24M92 118h24M130 110h24M168 118h24" stroke="#fff8c5" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(320 74)" fill="#0f172a">
+    <text x="0" y="76" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="74" font-weight="800" letter-spacing="-2">CRAM2Excel</text>
+    <text x="2" y="126" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="28" font-weight="600" fill="#0f766e">SAMtools plugin for exporting CRAM to native Excel workbooks</text>
+    <text x="2" y="172" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#475569">Fast to inspect. Easy to share. Still grounded in HTSlib.</text>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+build/
+external/
+.DS_Store
+*.swp
+*.swo
+*.xlsx
+*.cram
+*.crai
+*.fai

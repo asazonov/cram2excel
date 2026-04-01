@@ -1,0 +1,25 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential curl zlib1g-dev libbz2-dev liblzma-dev unzip
+
+      - name: Bootstrap toolchain
+        run: ./scripts/bootstrap_toolchain.sh
+
+      - name: Build plugin
+        run: make
+
+      - name: Validate end to end
+        run: ./validate.sh
