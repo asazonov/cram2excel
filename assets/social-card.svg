@@ -28,6 +28,6 @@
   <g transform="translate(410 150)" fill="#0f172a">
     <text x="0" y="90" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="96" font-weight="800" letter-spacing="-3">CRAM2Excel</text>
     <text x="4" y="155" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="36" font-weight="700" fill="#0f766e">SAMtools plugin for native Excel exports</text>
-    <text x="4" y="228" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="30" fill="#334155">Turn `samtools view -h` into a workbook with alignment sheets and headers.</text>
+    <text x="4" y="228" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="30" fill="#334155">Turn `samtools view -h` into Excel.</text>
   </g>
 </svg>
